@@ -14,8 +14,8 @@ public class MainApp extends JFrame {
         SignIn signIn = new SignIn(this);
         signIn.setVisible(true);
 
-        JLabel welcomeLabel = new JLabel("Bienvenido a la Aplicación Principal", JLabel.CENTER);
-        welcomeLabel.setFont(Constants.APP_FONT_TITLE);
-        add(welcomeLabel);
+        Manager manager = new Manager();
+        add(manager);
+        setVisible(true);
     }
 }
