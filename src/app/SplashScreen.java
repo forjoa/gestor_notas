@@ -4,6 +4,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import utils.Constants;
+
 public class SplashScreen extends JDialog {
     private JProgressBar progressBar;
 
@@ -15,12 +17,12 @@ public class SplashScreen extends JDialog {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        JLabel logoLabel = new JLabel("GESTOR DE NOTAS", JLabel.CENTER);
-        logoLabel.setFont(new Font("Inter", Font.BOLD, 24));
+        JLabel logoLabel = new JLabel(Constants.APP_NAME, JLabel.CENTER);
+        logoLabel.setFont(Constants.APP_FONT_TITLE);
         logoLabel.setForeground(new Color(0, 102, 204));
 
         JLabel messageLabel = new JLabel("Cargando recursos, por favor espere...", JLabel.CENTER);
-        messageLabel.setFont(new Font("Inter", Font.PLAIN, 14));
+        messageLabel.setFont(Constants.APP_FONT_TEXT);
         messageLabel.setForeground(Color.GRAY);
 
         progressBar = new JProgressBar(0, 100);
