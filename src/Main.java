@@ -1,3 +1,6 @@
+import app.MainApp;
+import app.SplashScreen;
+
 public class Main {
     public static void main(String[] args) {
         SplashScreen splashScreen = new SplashScreen();

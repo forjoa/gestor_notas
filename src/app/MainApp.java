@@ -1,4 +1,7 @@
+package app;
+
 import javax.swing.*;
+
 import java.awt.*;
 
 public class MainApp extends JFrame {
