@@ -8,7 +8,7 @@ public class Main {
 
         for (int i = 0; i <= 100; i++) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(70);
                 splashScreen
                         .updateProgress(i);
             } catch (InterruptedException e) {
