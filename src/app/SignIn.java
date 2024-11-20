@@ -37,6 +37,7 @@ public class SignIn extends JDialog {
         JLabel label = new JLabel("Usuario:");
         label.setFont(Constants.APP_FONT_TEXT);
         inputPanel.add(label);
+        field.setFont(Constants.APP_FONT_TEXT);
         inputPanel.add(field);
 
         JLabel passwordLabel = new JLabel("Contraseña:");
@@ -45,7 +46,9 @@ public class SignIn extends JDialog {
         inputPanel.add(passwordField);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 0, 20));
+        bAccept.setFont(Constants.APP_FONT_TEXT);
         buttonPanel.add(bAccept);
+        bCancel.setFont(Constants.APP_FONT_TEXT);
         buttonPanel.add(bCancel);
 
         add(inputPanel);
