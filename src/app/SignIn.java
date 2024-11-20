@@ -1,5 +1,9 @@
 package app;
+
 import javax.swing.*;
+
+import utils.Constants;
+
 import java.awt.*;
 
 public class SignIn extends JDialog {
@@ -25,13 +29,21 @@ public class SignIn extends JDialog {
         setUndecorated(true);
         setModal(true);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        ((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        ((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(50, 30, 50, 30));
 
-        JPanel inputPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel inputPanel = new JPanel(new GridLayout(4, 1, 20, 5));
+
+        JLabel label = new JLabel("Usuario:");
+        label.setFont(Constants.APP_FONT_TEXT);
+        inputPanel.add(label);
         inputPanel.add(field);
+
+        JLabel passwordLabel = new JLabel("Contraseña:");
+        passwordLabel.setFont(Constants.APP_FONT_TEXT);
+        inputPanel.add(passwordLabel);
         inputPanel.add(passwordField);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 0, 20));
         buttonPanel.add(bAccept);
         buttonPanel.add(bCancel);
 
