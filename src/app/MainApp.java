@@ -7,7 +7,7 @@ import utils.Constants;
 public class MainApp extends JFrame {
     public MainApp() {
         setTitle(Constants.APP_NAME);
-        setSize(600, 400);
+        setSize(1200, 1000);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

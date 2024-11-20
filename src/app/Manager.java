@@ -2,11 +2,9 @@ package app;
 
 import java.awt.FlowLayout;
 import java.util.Objects;
+import javax.swing.*;
 
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import models.Note;
 
 public class Manager extends JPanel {
 
@@ -19,11 +17,24 @@ public class Manager extends JPanel {
     };
 
     public Manager() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel panelUI = new JPanel();
-        panelUI.setLayout(new FlowLayout());
+        panelUI.setLayout(new FlowLayout(4));
 
         JComboBox<String> lafc = getStringJComboBox();
-        panelUI.add(lafc);
+        add(lafc);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.add(new JList<Note>());
+        contentPanel.add(new JTextArea());
+        add(contentPanel);
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new FlowLayout());
+        optionsPanel.add(new JButton("Agregar nota"));
+        optionsPanel.add(new JButton("Eliminar nota"));
+        add(optionsPanel);
 
         add(panelUI);
         setVisible(true);
@@ -37,23 +48,18 @@ public class Manager extends JPanel {
                 switch (Objects.requireNonNull(slaf)) {
                     case "Metal (Cross-Platform)":
                         UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-                        // JOptionPane.showConfirmDialog(null, slaf);
                         break;
                     case "Windows":
                         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-                        // JOptionPane.showConfirmDialog(null, slaf);
                         break;
                     case "Windows Classic":
                         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-                        // JOptionPane.showConfirmDialog(null, slaf);
                         break;
                     case "Nimbus":
                         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-                        // JOptionPane.showConfirmDialog(null, slaf);
                         break;
                     case "CDE/Motif":
                         UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-                        // JOptionPane.showConfirmDialog(null, slaf);
                         break;
                     default:
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
