@@ -27,7 +27,7 @@ public class SplashScreen extends JDialog {
 
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
-        progressBar.setForeground(new Color(0, 102, 204));
+        progressBar.setForeground(Constants.APP_COLOR);
 
         mainPanel.add(logoLabel, BorderLayout.CENTER);
         mainPanel.add(messageLabel, BorderLayout.SOUTH);
