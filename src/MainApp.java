@@ -12,7 +12,7 @@ public class MainApp extends JFrame {
         signIn.setVisible(true);
 
         JLabel welcomeLabel = new JLabel("Bienvenido a la Aplicación Principal", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomeLabel.setFont(new Font("Inter", Font.BOLD, 24));
         add(welcomeLabel);
     }
 }
