@@ -2,11 +2,11 @@ package app;
 
 import javax.swing.*;
 
-import java.awt.*;
+import utils.Constants;
 
 public class MainApp extends JFrame {
     public MainApp() {
-        setTitle("Aplicación Principal");
+        setTitle(Constants.APP_NAME);
         setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,7 +15,7 @@ public class MainApp extends JFrame {
         signIn.setVisible(true);
 
         JLabel welcomeLabel = new JLabel("Bienvenido a la Aplicación Principal", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Inter", Font.BOLD, 24));
+        welcomeLabel.setFont(Constants.APP_FONT_TITLE);
         add(welcomeLabel);
     }
 }
