@@ -16,7 +16,8 @@ public class SignIn extends JDialog {
         JButton bCancel = new JButton("Cancelar");
 
         bAccept.addActionListener(e -> {
-            if (field.getText().equals("admin") && new String(passwordField.getPassword()).equals("1234")) {
+            if (field.getText().equals(Constants.USER)
+                    && new String(passwordField.getPassword()).equals(Constants.PASSWORD)) {
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Mensaje de error",

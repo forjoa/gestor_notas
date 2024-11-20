@@ -19,7 +19,7 @@ public class SplashScreen extends JDialog {
 
         JLabel logoLabel = new JLabel(Constants.APP_NAME, JLabel.CENTER);
         logoLabel.setFont(Constants.APP_FONT_TITLE);
-        logoLabel.setForeground(new Color(0, 102, 204));
+        logoLabel.setForeground(Constants.APP_COLOR);
 
         JLabel messageLabel = new JLabel("Cargando recursos, por favor espere...", JLabel.CENTER);
         messageLabel.setFont(Constants.APP_FONT_TEXT);
