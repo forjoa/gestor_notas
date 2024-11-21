@@ -1,60 +1,97 @@
 package app;
 
 import javax.swing.*;
+import java.awt.*;
 
 import utils.Constants;
 
-import java.awt.*;
-
 public class SignIn extends JDialog {
 
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+
     public SignIn(JFrame parent) {
-        JTextField field = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
-
-        JButton bAccept = new JButton("Aceptar");
-        JButton bCancel = new JButton("Cancelar");
-
-        bAccept.addActionListener(e -> {
-            if (field.getText().equals(Constants.USER)
-                    && new String(passwordField.getPassword()).equals(Constants.PASSWORD)) {
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Mensaje de error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        bCancel.addActionListener(e -> System.exit(0));
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
 
         setUndecorated(true);
         setModal(true);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         ((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(50, 30, 50, 30));
 
+        // Agregar paneles a la ventana
+        add(createInputPanel());
+        add(createButtonPanel());
+
+        setSize(250, 250);
+        setLocationRelativeTo(parent);
+    }
+
+    /**
+     * Crea el panel de entrada de usuario y contraseña.
+     */
+    private JPanel createInputPanel() {
         JPanel inputPanel = new JPanel(new GridLayout(4, 1, 20, 5));
 
-        JLabel label = new JLabel("Usuario:");
-        label.setFont(Constants.APP_FONT_TEXT);
-        inputPanel.add(label);
-        field.setFont(Constants.APP_FONT_TEXT);
-        inputPanel.add(field);
+        JLabel usernameLabel = new JLabel("Usuario:");
+        usernameLabel.setFont(Constants.APP_FONT_TEXT);
+        inputPanel.add(usernameLabel);
+
+        usernameField.setFont(Constants.APP_FONT_TEXT);
+        inputPanel.add(usernameField);
 
         JLabel passwordLabel = new JLabel("Contraseña:");
         passwordLabel.setFont(Constants.APP_FONT_TEXT);
         inputPanel.add(passwordLabel);
+
+        passwordField.setFont(Constants.APP_FONT_TEXT);
         inputPanel.add(passwordField);
 
+        return inputPanel;
+    }
+
+    /**
+     * Crea el panel de botones (Aceptar y Cancelar).
+     */
+    private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 0, 20));
-        bAccept.setFont(Constants.APP_FONT_TEXT);
-        buttonPanel.add(bAccept);
-        bCancel.setFont(Constants.APP_FONT_TEXT);
-        buttonPanel.add(bCancel);
 
-        add(inputPanel);
-        add(buttonPanel);
+        JButton acceptButton = new JButton("Aceptar");
+        acceptButton.setFont(Constants.APP_FONT_TEXT);
+        acceptButton.addActionListener(e -> handleAccept());
 
-        setSize(250, 250);
-        setLocationRelativeTo(parent);
+        JButton cancelButton = new JButton("Cancelar");
+        cancelButton.setFont(Constants.APP_FONT_TEXT);
+        cancelButton.addActionListener(e -> handleCancel());
+
+        buttonPanel.add(acceptButton);
+        buttonPanel.add(cancelButton);
+
+        return buttonPanel;
+    }
+
+    /**
+     * Lógica para manejar el botón Aceptar.
+     */
+    private void handleAccept() {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        if (Constants.USER.equals(username) && Constants.PASSWORD.equals(password)) {
+            dispose(); // Cierra el diálogo si las credenciales son correctas.
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Usuario o contraseña incorrectos",
+                    "Mensaje de error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Lógica para manejar el botón Cancelar.
+     */
+    private void handleCancel() {
+        System.exit(0); // Termina la aplicación.
     }
 }
