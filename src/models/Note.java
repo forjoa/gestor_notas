@@ -10,6 +10,10 @@ public class Note {
         this.content = content;
     }
 
+    public Note() {
+        
+    }
+
     public String getTitle() {
         return title;
     }
