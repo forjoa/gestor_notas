@@ -72,6 +72,8 @@ public class Manager extends JPanel {
         JList<Note> list = new JList<>(noteModel);
         list.setCellRenderer(new NoteCellRenderer());
         list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        int preferredHeight = 300; // Altura preferida para la JList
+        list.setPreferredSize(new Dimension(200, preferredHeight)); // 200px de ancho y 300px de altura    
         return list;
     }
 
