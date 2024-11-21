@@ -77,7 +77,7 @@ public class Manager extends JPanel {
      * Crea el panel para cambiar el Look and Feel.
      */
     private JPanel createLookAndFeelSelector() {
-        JPanel panelUI = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panelUI = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JComboBox<String> lafc = getLookAndFeelComboBox();
         panelUI.add(lafc);
         return panelUI;
