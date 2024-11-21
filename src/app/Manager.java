@@ -1,19 +1,13 @@
 package app;
 
 import javax.swing.*;
-
-import core.AddNoteDialog;
-
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Objects;
-
+import java.awt.event.*;
 import models.Note;
 import models.NoteCellRenderer;
+import core.AddNoteDialog;
 import utils.Constants;
+import java.util.Objects;
 
 public class Manager extends JPanel {
 
@@ -24,63 +18,51 @@ public class Manager extends JPanel {
     public Manager() {
         noteModel = new DefaultListModel<>();
         noteList = createNoteList();
-        textArea.setFont(Constants.APP_FONT_TEXT);
-        textArea.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                noteList.getSelectedValue().setContent(textArea.getText());
-            }
-
-        });
-
-        noteList.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (noteList.getSelectedValue() != null) {
-                    textArea.setText(noteList.getSelectedValue().getContent());
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-
-        });
+        configureTextArea();
+        configureNoteList();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        initializeComponents();
+    }
 
-        // Selector de Look and Feel
+    /**
+     * Inicializa los componentes principales del panel.
+     */
+    private void initializeComponents() {
         add(createLookAndFeelSelector());
-
-        // Panel de contenido principal
         add(createContentPanel());
-
-        // Panel de opciones (botones)
         add(createOptionsPanel());
+    }
 
-        setVisible(true);
+    /**
+     * Configura el JTextArea para actualizar el contenido de la nota seleccionada.
+     */
+    private void configureTextArea() {
+        textArea.setFont(Constants.APP_FONT_TEXT);
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                Note selectedNote = noteList.getSelectedValue();
+                if (selectedNote != null) {
+                    selectedNote.setContent(textArea.getText());
+                }
+            }
+        });
+    }
+
+    /**
+     * Configura el JList para mostrar y seleccionar notas.
+     */
+    private void configureNoteList() {
+        noteList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Note selectedNote = noteList.getSelectedValue();
+                if (selectedNote != null) {
+                    textArea.setText(selectedNote.getContent());
+                }
+            }
+        });
     }
 
     /**
@@ -94,59 +76,36 @@ public class Manager extends JPanel {
     }
 
     /**
-     * Crea el panel para cambiar el Look and Feel.
-     */
-    private JPanel createLookAndFeelSelector() {
-        JPanel panelUI = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JComboBox<String> lafc = getLookAndFeelComboBox();
-        panelUI.add(lafc);
-        return panelUI;
-    }
-
-    /**
      * Crea el panel principal con la lista de notas y un área de texto.
      */
     private JPanel createContentPanel() {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
         contentPanel.add(new JScrollPane(noteList)); // La lista dentro de un scroll.
-        contentPanel.add(textArea); // Placeholder para área de texto.
+        contentPanel.add(textArea); // Área de texto para la nota.
         return contentPanel;
     }
 
     /**
-     * Crea el panel con los botones de agregar y eliminar nota.
+     * Crea el panel con los botones de agregar, editar y eliminar nota.
      */
     private JPanel createOptionsPanel() {
         JPanel optionsPanel = new JPanel(new FlowLayout());
-
-        JButton addNoteButton = new JButton("Agregar nota");
-        addNoteButton.setFont(Constants.APP_FONT_TEXT);
-        addNoteButton.setToolTipText("Agrega una nueva nota");
-        addNoteButton.addActionListener(e -> showAddNoteDialog());
-        optionsPanel.add(addNoteButton);
-
-        JButton editNoteButton = new JButton("Editar nota");
-        editNoteButton.setFont(Constants.APP_FONT_TEXT);
-        editNoteButton.setToolTipText("Edita la nota seleccionada");
-        editNoteButton.addActionListener(e -> editSelectedNote());
-        optionsPanel.add(editNoteButton);
-
-        JButton deleteNoteButton = new JButton("Eliminar nota");
-        deleteNoteButton.setFont(Constants.APP_FONT_TEXT);
-        deleteNoteButton.setToolTipText("Elimina la nota seleccionada");
-        deleteNoteButton.addActionListener(e -> deleteSelectedNote());
-        optionsPanel.add(deleteNoteButton);
-
+        optionsPanel.add(createButton("Agregar nota", "Agrega una nueva nota", e -> showAddNoteDialog()));
+        optionsPanel.add(createButton("Editar nota", "Edita la nota seleccionada", e -> editSelectedNote()));
+        optionsPanel.add(createButton("Eliminar nota", "Elimina la nota seleccionada", e -> deleteSelectedNote()));
         return optionsPanel;
     }
 
-    /*
-     * Obtiene la nota seleccionada y edita su contenido en base a lo que se haya
-     * escrito en el Text Area.
+    /**
+     * Crea un botón con texto, tooltip y acción asociada.
      */
-    private void editSelectedNote() {
-        noteList.getSelectedValue().setContent(textArea.getText());
+    private JButton createButton(String text, String tooltip, ActionListener action) {
+        JButton button = new JButton(text);
+        button.setFont(Constants.APP_FONT_TEXT);
+        button.setToolTipText(tooltip);
+        button.addActionListener(action);
+        return button;
     }
 
     /**
@@ -161,6 +120,16 @@ public class Manager extends JPanel {
     }
 
     /**
+     * Edita el contenido de la nota seleccionada.
+     */
+    private void editSelectedNote() {
+        Note selectedNote = noteList.getSelectedValue();
+        if (selectedNote != null) {
+            selectedNote.setContent(textArea.getText());
+        }
+    }
+
+    /**
      * Elimina la nota seleccionada de la lista.
      */
     private void deleteSelectedNote() {
@@ -168,6 +137,16 @@ public class Manager extends JPanel {
         if (selected != -1) {
             noteModel.remove(selected);
         }
+    }
+
+    /**
+     * Crea el panel para cambiar el Look and Feel.
+     */
+    private JPanel createLookAndFeelSelector() {
+        JPanel panelUI = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JComboBox<String> lafc = getLookAndFeelComboBox();
+        panelUI.add(lafc);
+        return panelUI;
     }
 
     /**
@@ -185,34 +164,38 @@ public class Manager extends JPanel {
         JComboBox<String> lafc = new JComboBox<>(lookAndFeels);
         lafc.setFont(Constants.APP_FONT_TEXT);
         lafc.setToolTipText("Cambiar Look and Feel");
-        lafc.addActionListener(e -> {
-            try {
-                String selectedLaf = (String) lafc.getSelectedItem();
-                switch (Objects.requireNonNull(selectedLaf)) {
-                    case "Metal (Cross-Platform)":
-                        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-                        break;
-                    case "Windows":
-                        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-                        break;
-                    case "Windows Classic":
-                        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-                        break;
-                    case "Nimbus":
-                        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-                        break;
-                    case "CDE/Motif":
-                        UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-                        break;
-                    default:
-                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                        break;
-                }
-                SwingUtilities.updateComponentTreeUI(this);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        lafc.addActionListener(e -> changeLookAndFeel((String) lafc.getSelectedItem()));
         return lafc;
+    }
+
+    /**
+     * Cambia el Look and Feel basado en la opción seleccionada.
+     */
+    private void changeLookAndFeel(String selectedLaf) {
+        try {
+            switch (Objects.requireNonNull(selectedLaf)) {
+                case "Metal (Cross-Platform)":
+                    UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                    break;
+                case "Windows":
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    break;
+                case "Windows Classic":
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+                    break;
+                case "Nimbus":
+                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                    break;
+                case "CDE/Motif":
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+                    break;
+                default:
+                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                    break;
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
