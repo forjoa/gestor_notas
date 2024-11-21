@@ -23,18 +23,23 @@ public class AddNoteDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Campo de texto para el título
-        panel.add(new JLabel("Título:"));
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel titleAdd = new JLabel("Título de la nota");
+        titleAdd.setFont(Constants.APP_FONT_TEXT);
+        titlePanel.add(titleAdd);
+        panel.add(titlePanel, BorderLayout.NORTH);
         titleField = new JTextField();
         titleField.setFont(Constants.APP_FONT_TEXT);
         panel.add(titleField);
 
         // Botones
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton acceptButton = new JButton("Aceptar");
         acceptButton.setFont(Constants.APP_FONT_TEXT);
         acceptButton.addActionListener(e -> {
             note = new Note();
             note.setTitle(titleField.getText().trim());
+            note.setContent("Nota vacía para " + note.getTitle());
             dialog.dispose();
         });
         JButton cancelButton = new JButton("Cancelar");

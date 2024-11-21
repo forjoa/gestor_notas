@@ -5,6 +5,8 @@ import javax.swing.*;
 import core.AddNoteDialog;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 
 import models.Note;
@@ -15,10 +17,37 @@ public class Manager extends JPanel {
 
     private final DefaultListModel<Note> noteModel;
     private final JList<Note> noteList;
+    private final JTextArea textArea = new JTextArea();
 
     public Manager() {
         noteModel = new DefaultListModel<>();
         noteList = createNoteList();
+        textArea.setFont(Constants.APP_FONT_TEXT);
+
+        noteList.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                textArea.setText(noteList.getSelectedValue().getContent());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+        });
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -61,7 +90,7 @@ public class Manager extends JPanel {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
         contentPanel.add(new JScrollPane(noteList)); // La lista dentro de un scroll.
-        contentPanel.add(new JTextArea()); // Placeholder para área de texto.
+        contentPanel.add(textArea); // Placeholder para área de texto.
         return contentPanel;
     }
 
@@ -76,12 +105,25 @@ public class Manager extends JPanel {
         addNoteButton.addActionListener(e -> showAddNoteDialog());
         optionsPanel.add(addNoteButton);
 
+        JButton editNoteButton = new JButton("Editar nota");
+        editNoteButton.setFont(Constants.APP_FONT_TEXT);
+        editNoteButton.addActionListener(e -> editSelectedNote());
+        optionsPanel.add(editNoteButton);
+
         JButton deleteNoteButton = new JButton("Eliminar nota");
         deleteNoteButton.setFont(Constants.APP_FONT_TEXT);
         deleteNoteButton.addActionListener(e -> deleteSelectedNote());
         optionsPanel.add(deleteNoteButton);
 
         return optionsPanel;
+    }
+
+    /*
+     * Obtiene la nota seleccionada y edita su contenido en base a lo que se haya
+     * escrito en el Text Area.
+     */
+    private void editSelectedNote() {
+        noteList.getSelectedValue().setContent(textArea.getText());
     }
 
     /**
