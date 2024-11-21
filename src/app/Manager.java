@@ -1,8 +1,11 @@
 package app;
 
-import java.awt.FlowLayout;
-import java.util.Objects;
 import javax.swing.*;
+
+import core.AddNoteDialog;
+
+import java.awt.*;
+import java.util.Objects;
 
 import models.Note;
 import models.NoteCellRenderer;
@@ -11,82 +14,111 @@ public class Manager extends JPanel {
 
     private final DefaultListModel<Note> noteModel;
     private final JList<Note> noteList;
-    private final String[] lookAndFeels = {
-            "Metal (Cross-Platform)",
-            "Windows",
-            "Windows Classic",
-            "Nimbus",
-            "CDE/Motif"
-    };
 
     public Manager() {
         noteModel = new DefaultListModel<>();
-        noteList = new JList<>(noteModel);
-        noteList.setCellRenderer(new NoteCellRenderer());
-        noteList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        noteList = createNoteList();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JPanel panelUI = new JPanel();
-        panelUI.setLayout(new FlowLayout(4));
 
-        JComboBox<String> lafc = getStringJComboBox();
-        add(lafc);
+        // Selector de Look and Feel
+        add(createLookAndFeelSelector());
 
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-        contentPanel.add(noteList);
-        contentPanel.add(new JTextArea());
-        add(contentPanel);
+        // Panel de contenido principal
+        add(createContentPanel());
 
-        JPanel optionsPanel = new JPanel();
-        optionsPanel.setLayout(new FlowLayout());
-        JButton addNoteButton = new JButton("Agregar nota");
-        addNoteButton.addActionListener(e -> {
-            JDialog dialogSetTitleNote = new JDialog();
-            dialogSetTitleNote.setModal(true);
-            dialogSetTitleNote.setTitle("Agregar nota");
-            dialogSetTitleNote.setSize(300, 100);
-            dialogSetTitleNote.setLocationRelativeTo(null);
-            Note note = new Note();
-            JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Titulo"));
-            panel.add(new JTextField());
-            JButton bAccept = new JButton("Aceptar");
-            bAccept.addActionListener(e1 -> {
-                note.setTitle(((JTextField) panel.getComponent(1)).getText());
-                dialogSetTitleNote.dispose();
-            });
-            panel.add(bAccept);
-            dialogSetTitleNote.add(panel);
+        // Panel de opciones (botones)
+        add(createOptionsPanel());
 
-            dialogSetTitleNote.setVisible(true);
-
-            noteModel.addElement(note);
-        });
-        optionsPanel.add(addNoteButton);
-
-        JButton deleteNoteButton = new JButton("Eliminar nota");
-        deleteNoteButton.addActionListener(e -> {
-            int selected = noteList.getSelectedIndex();
-            if (selected != -1) {
-                noteModel.remove(selected);
-            }
-        });
-        optionsPanel.add(deleteNoteButton);
-
-        add(optionsPanel);
-
-        add(panelUI);
         setVisible(true);
     }
 
-    private JComboBox<String> getStringJComboBox() {
+    /**
+     * Crea la lista de notas con su modelo y renderer personalizado.
+     */
+    private JList<Note> createNoteList() {
+        JList<Note> list = new JList<>(noteModel);
+        list.setCellRenderer(new NoteCellRenderer());
+        list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        return list;
+    }
+
+    /**
+     * Crea el panel para cambiar el Look and Feel.
+     */
+    private JPanel createLookAndFeelSelector() {
+        JPanel panelUI = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JComboBox<String> lafc = getLookAndFeelComboBox();
+        panelUI.add(lafc);
+        return panelUI;
+    }
+
+    /**
+     * Crea el panel principal con la lista de notas y un área de texto.
+     */
+    private JPanel createContentPanel() {
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+        contentPanel.add(new JScrollPane(noteList)); // La lista dentro de un scroll.
+        contentPanel.add(new JTextArea()); // Placeholder para área de texto.
+        return contentPanel;
+    }
+
+    /**
+     * Crea el panel con los botones de agregar y eliminar nota.
+     */
+    private JPanel createOptionsPanel() {
+        JPanel optionsPanel = new JPanel(new FlowLayout());
+
+        JButton addNoteButton = new JButton("Agregar nota");
+        addNoteButton.addActionListener(e -> showAddNoteDialog());
+        optionsPanel.add(addNoteButton);
+
+        JButton deleteNoteButton = new JButton("Eliminar nota");
+        deleteNoteButton.addActionListener(e -> deleteSelectedNote());
+        optionsPanel.add(deleteNoteButton);
+
+        return optionsPanel;
+    }
+
+    /**
+     * Abre un diálogo para agregar una nueva nota.
+     */
+    private void showAddNoteDialog() {
+        AddNoteDialog dialog = new AddNoteDialog();
+        Note newNote = dialog.showDialog();
+        if (newNote != null) {
+            noteModel.addElement(newNote);
+        }
+    }
+
+    /**
+     * Elimina la nota seleccionada de la lista.
+     */
+    private void deleteSelectedNote() {
+        int selected = noteList.getSelectedIndex();
+        if (selected != -1) {
+            noteModel.remove(selected);
+        }
+    }
+
+    /**
+     * Crea un JComboBox para cambiar el Look and Feel.
+     */
+    private JComboBox<String> getLookAndFeelComboBox() {
+        String[] lookAndFeels = {
+                "Metal (Cross-Platform)",
+                "Windows",
+                "Windows Classic",
+                "Nimbus",
+                "CDE/Motif"
+        };
+
         JComboBox<String> lafc = new JComboBox<>(lookAndFeels);
         lafc.addActionListener(e -> {
             try {
-                String slaf = (String) lafc.getSelectedItem();
-                switch (Objects.requireNonNull(slaf)) {
+                String selectedLaf = (String) lafc.getSelectedItem();
+                switch (Objects.requireNonNull(selectedLaf)) {
                     case "Metal (Cross-Platform)":
                         UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
                         break;
@@ -106,12 +138,11 @@ public class Manager extends JPanel {
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                         break;
                 }
-                SwingUtilities.updateComponentTreeUI(Manager.this);
+                SwingUtilities.updateComponentTreeUI(this);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
         return lafc;
     }
-
 }
