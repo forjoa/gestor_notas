@@ -102,16 +102,19 @@ public class Manager extends JPanel {
 
         JButton addNoteButton = new JButton("Agregar nota");
         addNoteButton.setFont(Constants.APP_FONT_TEXT);
+        addNoteButton.setToolTipText("Agrega una nueva nota");
         addNoteButton.addActionListener(e -> showAddNoteDialog());
         optionsPanel.add(addNoteButton);
 
         JButton editNoteButton = new JButton("Editar nota");
         editNoteButton.setFont(Constants.APP_FONT_TEXT);
+        editNoteButton.setToolTipText("Edita la nota seleccionada");
         editNoteButton.addActionListener(e -> editSelectedNote());
         optionsPanel.add(editNoteButton);
 
         JButton deleteNoteButton = new JButton("Eliminar nota");
         deleteNoteButton.setFont(Constants.APP_FONT_TEXT);
+        deleteNoteButton.setToolTipText("Elimina la nota seleccionada");
         deleteNoteButton.addActionListener(e -> deleteSelectedNote());
         optionsPanel.add(deleteNoteButton);
 
@@ -161,6 +164,7 @@ public class Manager extends JPanel {
 
         JComboBox<String> lafc = new JComboBox<>(lookAndFeels);
         lafc.setFont(Constants.APP_FONT_TEXT);
+        lafc.setToolTipText("Cambiar Look and Feel");
         lafc.addActionListener(e -> {
             try {
                 String selectedLaf = (String) lafc.getSelectedItem();
