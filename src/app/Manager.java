@@ -5,6 +5,8 @@ import javax.swing.*;
 import core.AddNoteDialog;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
@@ -23,6 +25,22 @@ public class Manager extends JPanel {
         noteModel = new DefaultListModel<>();
         noteList = createNoteList();
         textArea.setFont(Constants.APP_FONT_TEXT);
+        textArea.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                noteList.getSelectedValue().setContent(textArea.getText());
+            }
+            
+        });
 
         noteList.addMouseListener(new MouseListener() {
 
