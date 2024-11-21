@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import models.Note;
 import models.NoteCellRenderer;
+import utils.Constants;
 
 public class Manager extends JPanel {
 
@@ -71,10 +72,12 @@ public class Manager extends JPanel {
         JPanel optionsPanel = new JPanel(new FlowLayout());
 
         JButton addNoteButton = new JButton("Agregar nota");
+        addNoteButton.setFont(Constants.APP_FONT_TEXT);
         addNoteButton.addActionListener(e -> showAddNoteDialog());
         optionsPanel.add(addNoteButton);
 
         JButton deleteNoteButton = new JButton("Eliminar nota");
+        deleteNoteButton.setFont(Constants.APP_FONT_TEXT);
         deleteNoteButton.addActionListener(e -> deleteSelectedNote());
         optionsPanel.add(deleteNoteButton);
 
@@ -115,6 +118,7 @@ public class Manager extends JPanel {
         };
 
         JComboBox<String> lafc = new JComboBox<>(lookAndFeels);
+        lafc.setFont(Constants.APP_FONT_TEXT);
         lafc.addActionListener(e -> {
             try {
                 String selectedLaf = (String) lafc.getSelectedItem();
