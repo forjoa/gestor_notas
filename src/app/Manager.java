@@ -39,14 +39,16 @@ public class Manager extends JPanel {
             public void keyReleased(KeyEvent e) {
                 noteList.getSelectedValue().setContent(textArea.getText());
             }
-            
+
         });
 
         noteList.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                textArea.setText(noteList.getSelectedValue().getContent());
+                if (noteList.getSelectedValue() != null) {
+                    textArea.setText(noteList.getSelectedValue().getContent());
+                }
             }
 
             @Override
