@@ -3,6 +3,7 @@ package core;
 import javax.swing.*;
 import java.awt.*;
 import models.Note;
+import utils.Constants;
 
 public class AddNoteDialog {
 
@@ -24,17 +25,20 @@ public class AddNoteDialog {
         // Campo de texto para el título
         panel.add(new JLabel("Título:"));
         titleField = new JTextField();
+        titleField.setFont(Constants.APP_FONT_TEXT);
         panel.add(titleField);
 
         // Botones
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton acceptButton = new JButton("Aceptar");
+        acceptButton.setFont(Constants.APP_FONT_TEXT);
         acceptButton.addActionListener(e -> {
             note = new Note();
             note.setTitle(titleField.getText().trim());
             dialog.dispose();
         });
         JButton cancelButton = new JButton("Cancelar");
+        cancelButton.setFont(Constants.APP_FONT_TEXT);
         cancelButton.addActionListener(e -> {
             note = null;
             dialog.dispose();
