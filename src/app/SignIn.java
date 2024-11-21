@@ -23,7 +23,7 @@ public class SignIn extends JDialog {
         add(createInputPanel());
         add(createButtonPanel());
 
-        setSize(250, 250);
+        setSize(300, 250);
         setLocationRelativeTo(parent);
     }
 
