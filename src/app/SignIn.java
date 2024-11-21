@@ -14,6 +14,9 @@ public class SignIn extends JDialog {
         usernameField = new JTextField();
         passwordField = new JPasswordField();
 
+        usernameField.setToolTipText("Introduce tu usuario");
+        passwordField.setToolTipText("Introduce tu contraseña");
+
         setUndecorated(true);
         setModal(true);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -58,10 +61,12 @@ public class SignIn extends JDialog {
 
         JButton acceptButton = new JButton("Aceptar");
         acceptButton.setFont(Constants.APP_FONT_TEXT);
+        acceptButton.setToolTipText("Inicia sesión");
         acceptButton.addActionListener(e -> handleAccept());
 
         JButton cancelButton = new JButton("Cancelar");
         cancelButton.setFont(Constants.APP_FONT_TEXT);
+        cancelButton.setToolTipText("Salir");
         cancelButton.addActionListener(e -> handleCancel());
 
         buttonPanel.add(acceptButton);
