@@ -6,6 +6,7 @@ import java.awt.event.*;
 import models.Note;
 import models.NoteCellRenderer;
 import core.AddNoteDialog;
+import core.EditNoteDialog;
 import utils.Constants;
 import java.util.Objects;
 
@@ -73,7 +74,7 @@ public class Manager extends JPanel {
         list.setCellRenderer(new NoteCellRenderer());
         list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         int preferredHeight = 300; // Altura preferida para la JList
-        list.setPreferredSize(new Dimension(200, preferredHeight)); // 200px de ancho y 300px de altura    
+        list.setPreferredSize(new Dimension(200, preferredHeight)); // 200px de ancho y 300px de altura
         return list;
     }
 
@@ -125,10 +126,10 @@ public class Manager extends JPanel {
      * Edita el contenido de la nota seleccionada.
      */
     private void editSelectedNote() {
-        Note selectedNote = noteList.getSelectedValue();
-        if (selectedNote != null) {
-            selectedNote.setContent(textArea.getText());
-        }
+        EditNoteDialog dialog = new EditNoteDialog();
+        String newTitle = dialog.showDialog();
+        noteList.getSelectedValue().setTitle(newTitle);
+        noteList.repaint();
     }
 
     /**
@@ -138,6 +139,7 @@ public class Manager extends JPanel {
         int selected = noteList.getSelectedIndex();
         if (selected != -1) {
             noteModel.remove(selected);
+            textArea.setText("");
         }
     }
 
